@@ -19,8 +19,9 @@ import yaml
 MIN_SCHEMA_VERSION = "1.0"
 
 class ProviderInventoryConfig(object):
-    def __init__(schema_version, data):
+    def __init__(schema_version, resource_class, data):
         self.schema_version = schema_version
+        self.resource_class = resource_class
         self.total = data.get("total")
         self.reserved = data.get("reserved")
         self.min_unit = data.get("min_unit")
@@ -47,7 +48,7 @@ class ProviderConfig(object):
         if inventories:
             self.inventories = {
                 resource_class: ProviderInventoryConfig(
-                    schema_version, inv_data)
+                    schema_version, resource_class, inv_data)
                 for resource_class, inv_data in inventories.items()
             }
         traits = data.get("traits")
@@ -75,4 +76,4 @@ def from_file(path):
             msg = msg % (path, str(e))
             raise ValueError(msg)
 
-    return Config(data)
+    return ProviderConfig(data)
