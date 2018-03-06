@@ -1,0 +1,11 @@
+*.egg*
+build/
+*.pyc
+*.swp
+.venv
+.testrepository
+.tox
+
+# pbr-generated stuff
+/AUTHORS
+/ChangeLog
