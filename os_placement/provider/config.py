@@ -19,7 +19,7 @@ import yaml
 MIN_SCHEMA_VERSION = "1.0"
 
 class ProviderInventoryConfig(object):
-    def __init__(schema_version, resource_class, data):
+    def __init__(self, schema_version, resource_class, data):
         self.schema_version = schema_version
         self.resource_class = resource_class
         self.total = data.get("total")
@@ -31,15 +31,15 @@ class ProviderInventoryConfig(object):
 
 
 class ProviderTraitsConfig(object):
-    def __init__(schema_version, data):
+    def __init__(self, schema_version, data):
         self.schema_version = schema_version
         self.always = data.get("always")
         self.ignore = data.get("ignore")
 
 
 class ProviderConfig(object):
-    def __init__(data):
-        schema_version = data.get("schema_version", MIN_SCHEMA_VERSION)
+    def __init__(self, data):
+        schema_version = str(data.get("schema_version", MIN_SCHEMA_VERSION))
         self.schema_version = schema_version
         self.uuid = data.get("uuid")
         self.name = data.get("name")

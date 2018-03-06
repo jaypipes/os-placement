@@ -1,0 +1,74 @@
+# The version of the provider.yaml schema is a $MAJOR.$MINOR
+# where all $MINOR increments are backwards-compatible with
+# all versions before it in the $MAJOR number
+schema_version: 1.0
+# An optional override for the provider's UUID. If set, the agent responsible
+# for setting traits and inventory attributes will use this value when
+# creating a new provider record
+uuid: b0d8feb1-1389-4c61-b8a8-52030847da27
+# An optional override for the provider's unique name. If set, the agent responsible
+# for setting traits and inventory attributes will use this value when
+# creating a new provider record
+name: zoneA.row1.rack13.compute26
+# If the provider is not a root resource provider, this field indicates
+# the provider's parent provider UUID or unique name
+# parent: 9c400fbc-26d0-4e96-9fc2-9f6b8f2068bc
+
+# The inventories element is a map of $RESOURCE_CLASS names
+# to a collection of inventory information overrides for that resource
+# class on the provider. When present, the value from the provider.yaml
+# file will supercede information that might be discovered programatically
+# by some agent (e.g. the virt driver's auto-discovery of compute resources
+# can be overridden if one of the keys in the resource class block is present
+inventories:
+    VCPU:
+        # Optional override for the total amount of the resource to be presented
+        # by this provider.
+        # total: 24
+        # Optional override for the amount of the resource that is marked as
+        # reserved for the host
+        # reserved: 0
+        # Optional override for the minimum number of the resource that may
+        # be requested on this provider
+        # min_unit: 1
+        # Optional override for the maximum number of the resource that may
+        # be requested on this provider
+        max_unit: 12
+        # Optional override for the "step size" of requested amounts of the resource
+        # that may be requested on this provider. The step size is modulo'd against
+        # the requested amount to determine whether the requested amount aligns
+        # with the step size of the resource
+        # step_size: 1
+        # Optional override for the allocation ratio (overcommit ratio) of the resource
+        # on the provider
+        # allocation_ratio: 16.0
+    MEMORY_MB:
+        reserved: 256
+        min_unit: 64
+        max_unit: 16384
+        step_size: 64
+    DISK_GB:
+        total: 2000
+        reserved: 100
+        min_unit: 100
+        max_unit: 1000
+        step_size: 100
+        allocation_ratio: 1.0
+
+# The traits element describes overrides for the provider's collection of traits.
+traits:
+
+    # Because agents (such as a compute virt driver) may auto-discover a collection
+    # of capabilities for a provider (such as a set of CPU instruction set extensions),
+    # and because administrators need the ability to externally associate providers
+    # to certain capabilities, we need a way of signaling that certain traits should
+    # always be set against a provider -- even if an external actor manually removes
+    # the trait association via a call to the placement API.
+    always:
+    - HW_CPU_X86_SSE42
+    - CUSTOM_PHYSNET_INTRANET
+    # Likewise, we need the ability to signal to agents that certain traits that might
+    # be auto-discovered by the agent should be ignored and the agent should not
+    # associate these traits with the provider
+    ignore:
+    - HW_CPU_X86_AVX2
